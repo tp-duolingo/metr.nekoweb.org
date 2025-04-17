@@ -12,7 +12,7 @@
 	<meta property="og:image" content="https://dekas.link/favicon.gif" />
 	<meta property="og:description" content="wawawawa" />
 	<meta name="theme-color" content="#ccff90" />
-	<meta name="description" content="wawawawa 2">
+	<meta name="description" content="Welcome to Metr's personal website. Explore music, coding, and gaming content.">
 	<title>deka</title>
 	<style>
 		@font-face { font-family: "msgothicregular"; src: url("/font.woff2") format("woff2"); font-weight: normal; font-style: normal; }
@@ -35,33 +35,34 @@
 	</style>
 	</head>
 	<body>
-		<div>
-
+		<nav>
 			<ul>
 				<li><a href="https://discord.com/users/877557616094638112">Discord <small>| @_metr_</small></a></li>
 				<li><a href="https://github.com/tp-duolingo">Github <small>| @tp-duolingo</small></a></li>
 			</ul>
-			<div class="center links">
-				<h3></h3>
-			</div>
-			<noscript><p><mark>You have JavaScript turned off. Some things will not load.</mark></p></noscript>
-			<h2>wawawawa</h2>
-			<p>Hi, I'm Metr!<br>
-				I likey music<br>
-				I likey coding<br>
-				I likey gaming<br>
-				I likey <a href="https://www.youtube.com/watch?v=2Vv-BfVoq4g">Ed Sheeran</a><br>
-			</p>
-			<section>
-				<p>&#127911; <span id="song" aria-live="polite"><mark>loading</mark></span></p>
-			</section>
-			<div>
-				</ul>
-			</div>
-			<div class="center nohl">
-				<a href="https://lucida.to"><img class="crispy" src="/lucida.gif" alt="lucida.to" width="88" height="31" loading="lazy"></a>
-			</div>
-			<p class="license">CC BY-NC-SA 4.0&ensp;<small><a href="/license">See more</a>&ensp;</small>😽</p>
+		</nav>
+		<div class="center links">
+			<h3>Welcome to Metr's Website</h3>
+		</div>
+		<noscript>
+			<p><mark>JavaScript is disabled. Some features, like live song updates, will not work.</mark></p>
+		</noscript>
+		<h2>wawawawa</h2>
+		<p>Hi, I'm Metr!<br>
+			I likey music<br>
+			I likey coding<br>
+			I likey gaming<br>
+			I likey <a href="https://www.youtube.com/watch?v=2Vv-BfVoq4g">Ed Sheeran</a><br>
+		</p>
+		<section>
+			<p>&#127911; <span id="song" aria-live="polite"><mark>loading</mark></span></p>
+		</section>
+		<div class="center nohl">
+			<a href="https://lucida.to">
+				<img class="crispy" src="/lucida.gif" alt="Lucida logo" width="88" height="31" loading="lazy">
+			</a>
+		</div>
+		<p class="license">CC BY-NC-SA 4.0&ensp;<small><a href="/license">See more</a>&ensp;</small>😽</p>
 		<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 		function timeElapsedSinceUTS(uts) {
 			const curTime = Math.floor(Date.now() / 1000);
@@ -87,6 +88,10 @@
 			socket.onmessage = function (event) {
 				const data = JSON.parse(event.data);
 				const listeningState = document.getElementById('song');
+				if (!data.recenttracks?.track?.[0]) {
+					console.error('Track data is missing or invalid.');
+					return;
+				}
 				if (data.recenttracks?.track?.[0]) {
 					const track = data.recenttracks.track[0];
 					if (track.nowplaying === 'false') {
@@ -104,8 +109,6 @@
 							by 
 							<a href="${track.artist.url}">${track.artist.name}</a>`;
 					}
-				} else {
-					console.error('Track data is missing or invalid.');
 				}
 			};
 			socket.onerror = function (error) {
