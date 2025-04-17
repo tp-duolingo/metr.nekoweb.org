@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="preload" href="/font.woff2" as="font" type="font/woff2" crossorigin />
+	<link rel="icon" href="/favicon.gif" type="image/gif" />
+	<meta name="darkreader-lock" />
+	<meta property="og:type" content="Website" />
+	<meta property="og:title" content="Metr's Website" />
+	<meta property="og:url" content="https://metr.nekoweb.org" />
+	<meta property="og:image" content="https://dekas.link/favicon.gif" />
+	<meta property="og:description" content="wawawawa" />
+	<meta name="theme-color" content="#ccff90" />
+	<meta name="description" content="wawawawa 2">
+	<title>deka</title>
+	<style>
+		@font-face { font-family: "msgothicregular"; src: url("/font.woff2") format("woff2"); font-weight: normal; font-style: normal; }
+		* { box-sizing: border-box; }
+		html { font-family: msgothicregular, Verdana, sans-serif; font-size: 18px; }
+		body { background-color: #972e2e; color: #f5f5dc; }
+		.center { display: flex; justify-content: center; align-items: center; }
+		a:link { color: #3f24d4; }
+		a:visited { color: #d06c94; }
+		a:active { background: #85866593; }
+		a:hover { background: #434340; }
+		a:focus { text-decoration: none; background: #e5e96693; }
+		.license { font-size: 14px; display: flex; justify-content: center; align-items: center; }
+		div.shiggy { float: right }
+		img.crispy { image-rendering: -moz-crisp-edges; image-rendering: -webkit-crisp-edges; image-rendering: pixelated; image-rendering: crisp-edges }
+		div.nohl { a:active { background: none }; a:hover { background: none }; a:focus { background: none } }
+		img.center {
+			max-width: 100%;
+		}
+	</style>
+	</head>
+	<body>
+		<div>
+
+			<ul>
+				<li><a href="https://discord.com/users/877557616094638112">Discord <small>| @_metr_</small></a></li>
+				<li><a href="https://github.com/tp-duolingo">Github <small>| @tp-duolingo</small></a></li>
+			</ul>
+			<div class="center links">
+				<h3></h3>
+			</div>
+			<noscript><p><mark>You have JavaScript turned off. Some things will not load.</mark></p></noscript>
+			<h2>wawawawa</h2>
+			<p>Hi, I'm Metr!<br>
+				I likey music<br>
+				I likey coding<br>
+				I likey gaming<br>
+				I likey <a href="https://www.youtube.com/watch?v=2Vv-BfVoq4g">Ed Sheeran</a><br>
+			</p>
+			<section>
+				<p>&#127911; <span id="song" aria-live="polite"><mark>loading</mark></span></p>
+			</section>
+			<div>
+				</ul>
+			</div>
+			<div class="center nohl">
+				<a href="https://lucida.to"><img class="crispy" src="/lucida.gif" alt="lucida.to" width="88" height="31" loading="lazy"></a>
+			</div>
+			<p class="license">CC BY-NC-SA 4.0&ensp;<small><a href="/license">See more</a>&ensp;</small>😽</p>
+		<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+		function timeElapsedSinceUTS(uts) {
+			const curTime = Math.floor(Date.now() / 1000);
+			const elapTime = curTime - parseInt(uts, 10);
+			if (elapTime < 60) {
+				return `${ elapTime } seconds ago`;
+			} else if (elapTime < 3600) {
+				const minutes = Math.floor(elapTime / 60);
+				return `${ minutes } minute(s) ago`;
+			} else if (elapTime < 86400) {
+				const hours = Math.floor(elapTime / 3600);
+				return `${ hours } hour(s) ago`;
+			} else {
+				const days = Math.floor(elapTime / 86400);
+				return `${ days } day(s) ago`;
+			}
+		}
+		function scrobbledWS() {
+			let socket = new WebSocket('wss://scrobbled.tepiloxtl.net/ws/get_last_track/iamdeka');
+			socket.onopen = function (e) {
+				console.log('Scrobbled WS open');
+			};
+			socket.onmessage = function (event) {
+				const data = JSON.parse(event.data);
+				const listeningState = document.getElementById('song');
+				if (data.recenttracks?.track?.[0]) {
+					const track = data.recenttracks.track[0];
+					if (track.nowplaying === 'false') {
+						const timeAgo = timeElapsedSinceUTS(track.date.uts);
+						listeningState.innerHTML = `
+							<strong>listened to</strong>: 
+							<a href="${track.url}">${track.name}</a> 
+							by 
+							<a href="${track.artist.url}">${track.artist.name}</a> 
+							${timeAgo}`;
+					} else {
+						listeningState.innerHTML = `
+							<strong>currently listening to</strong>: 
+							<a href="${track.url}">${track.name}</a> 
+							by 
+							<a href="${track.artist.url}">${track.artist.name}</a>`;
+					}
+				} else {
+					console.error('Track data is missing or invalid.');
+				}
+			};
+			socket.onerror = function (error) {
+				console.error('WebSocket error:', error);
+				socket.close();
+			};
+			// Reconnect WebSocket if the connection is lost
+			socket.onclose = function (event) {
+				if (event.wasClean) {
+					console.log(`Scrobbled WS closed with code ${event.code} ${event.reason}`);
+				} else {
+					console.log('Scrobbled WS died, reconnecting in 5 seconds...');
+					setTimeout(scrobbledWS, 5000);
+				}
+			};
+		}
+		scrobbledWS();
+		</script>
+	</body>
+</html>
